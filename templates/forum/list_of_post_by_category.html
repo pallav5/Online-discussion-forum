@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+
+{% block 'title' %} {{ category.title }} {% endblock  %}
+{% block content %}
+    <style>
+
+    .q {
+
+        background-color:aquamarine;
+    }
+    </style>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+
+
+
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+
+        <h2> Selected Category:"{{ category.title|capfirst }}"</h2>
+
+
+          <hr>
+          <hr>
+            <h5>All posts in category:  {{ category.title }} </h5>
+      <hr>
+           {% for item in post %}
+               <h2></h2>
+
+               <h3 class="q"> {{ item.title | capfirst }}</h3>
+               <h2>{{ item.desc |truncatechars:50 }}</h2>
+               <p class=" text-muted">Posted by:{{ item.user }} on {{ item.date }}</p>
+               <br>
+               <hr>
+                    {% endfor %}
+      </div>
+    </div>
+
+
+
+    {% block sidebar %} {% include 'forum/sidebar.html' %} {% endblock sidebar %}
+  </div>
+</div>
+
+
+{% endblock content %}

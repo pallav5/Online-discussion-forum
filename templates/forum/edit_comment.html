@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{#{% load crispy_forms_tags %}#}
+
+
+
+<title>{% block 'title' %}{% endblock %}</title>
+
+
+{% block content %}
+
+
+
+
+
+    <style>
+    .x{
+        background: aquamarine;
+    }
+    </style>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 left top">
+
+
+      <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            {% if request.user.is_authenticated %}
+            <input type="submit" value="comment" class="btn btn-outline-success">
+            {% else %}
+            <input type="submit" value="comment" class="btn btn-outline-success" disabled>
+            {% endif %}
+        </form>
+
+
+
+ </div>
+
+   {% block sidebar %} {% include 'forum/sidebar.html' %} {% endblock sidebar %}
+</div>
+
+      </div>
+
+
+
+
+{% endblock content %}

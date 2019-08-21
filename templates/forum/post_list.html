@@ -1,0 +1,92 @@
+{% extends "base/base.html" %}
+{% block content %}
+<style>
+
+
+
+
+
+    body {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+        background-color: #fdfdfd;
+    }
+
+    .btn-primary{
+
+        background: #227093;
+    }
+
+
+            .masthead {
+            background: #ff793f ;
+            height: auto;
+            padding-bottom: 15px;
+            box-shadow: 0 16px 48px #E3E7EB;
+            padding-top: 10px;
+        }
+
+    .card {
+        box-shadow: 0 16px 48px #E3E7EB;
+    }
+</style>
+
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h3 class=" site-heading my-4 mt-3 text-white"> Any queries? Feel free to ask here!! </h3>
+                    <p class="text-light">We try to resolve your doubts as effectively we can..!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+<a href="{% url 'new_post' %}" class=" btn-lg btn-success">Add new post</a>
+<a href="{% url 'post_list_all'  %}" class=" btn-lg btn-dark">See all posts</a>
+
+      <a href="{% url 'category_list' %} " class=" btn-lg btn-danger">Categories</a>
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+
+
+        <div class="col-md-8 mt-3 left">
+        <h2 >All posts</h2>
+            {% for post in post.all %}
+
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <h2> <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h2>
+                    <small class="card-text text-muted h6"> Posted by:{{ post.user }} | on {{ post.date}} |
+                        Category:<a href="{% url 'list_of_post_by_category' post.category.id %}"> {{ post.category }}</a>  </small>
+                    <p class="card-text">{{post.desc|slice:":100" }}</p>
+
+
+
+{#                    <a href="{% url 'list_of_post_by_category' slug=post.category.slug %}" class="btn btn-primary">Categories &rarr;</a>#}
+                    <a href="{% url 'post_detail' post.id %}" class="btn btn-primary">Read More &rarr;</a>
+                </div>
+            </div>
+
+
+         {% endfor %}
+
+
+
+
+
+
+
+
+        </div>
+            {% block sidebar %} {% include 'forum/sidebar.html' %} {% endblock sidebar %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8">
+        <div class="page-header">
+            <h1>Add new comment</h1>
+        </div>
+
+    <form method='POST'> {% csrf_token %}
+    {{ comment_form|crispy }}
+    <button type="submit" class="btn-success">Submit</button>
+    </form>
+    </div>
+    <div class="col-md-4">
+
+    <div class="page-header">
+            <h1>Sidebar</h1>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+

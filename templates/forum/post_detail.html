@@ -1,0 +1,142 @@
+{% extends 'base/base.html' %}
+{#{% load crispy_forms_tags %}#}
+
+
+
+<title>{% block 'title' %}{% endblock %}</title>
+
+
+{% block content %}
+
+ <style>
+    .x{
+        background: aquamarine;
+    }
+    </style>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h1 class="x">{% block title %} {{ post.title|capfirst }} {% endblock title %}</h1>
+
+        <p class="card-text ">{{ post.desc | safe }}</p>
+          <small class=" text-muted"> Posted by: {{ post.user }} on {{ post.date }} in  Category:<a href="{% url 'list_of_post_by_category' post.category.id %}"> {{ post.category }}</a></small>
+      <hr>
+
+      <h4 >Leave your comment</h4>
+      <hr>
+        <small>Total Number of comments:{{ post.comments.count }}</small>
+      <hr>
+
+
+
+
+
+
+
+
+
+          <div class="main-comment-section">
+            <div class="container-fluid mt-2">
+             <form method="post" >
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            {% if request.user.is_authenticated %}
+            <input type="submit" value="comment" class="btn btn-outline-success">
+            {% else %}
+            <input type="submit" value="comment" class="btn btn-outline-success" disabled>
+            {% endif %}
+        </form>
+            <hr>
+            <hr>
+            </div>
+            </div>
+
+
+
+
+ {% for comment in comments %}
+   <blockquote class="blockquote">
+  <p class="mb-0"><big> {{ comment.content }}</big> | <a href="{%url 'edit_comment' comment.id %}">edit</a> | <a href="#" onclick="delete_('{% url 'delete_comment' comment.id %}')">delete</a> </p>
+  <footer class="blockquote-footer"><cite title="Source Title">{{ comment.user }} commented</cite> on {{ comment.date }}</footer>
+</blockquote>
+
+
+
+     <form action="{% url 'vote_comment' comment.id %}" method="post">
+     {% csrf_token %}
+
+{% if voted %}
+
+    <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">Undo vote</button>
+    {% else %}
+       <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">Vote</button>
+     {% endif %}
+ </form>
+
+
+
+  <div class="reply-section container mt-2">
+    {% for reply in comment.replies.all %}
+
+         <blockquote class="blockquote">
+  <p class="mb-0"> {{ reply.content }}<a href="{%url 'edit_reply' reply.id %}"> edit</a> | <a href="#" onclick="delete_('{% url 'delete_reply' reply.id %}')">delete</a></p>
+  <footer class="blockquote-footer"><cite title="Source Title">{{ reply.user }} <- replied</cite> on {{ reply.date }}</footer>
+</blockquote>
+
+        {% endfor %}
+   <div class="form-group row">
+
+
+      <form method="post" class="container ">
+            {% csrf_token %}
+            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+            {{ comment_form.as_p }}
+            {% if request.user.is_authenticated %}
+            <input type="submit" value="reply" class="btn btn-outline-success">
+            {% else %}
+            <input type="submit" value="reply" class="btn btn-outline-success" disabled>
+            {% endif %}
+      <hr><hr>
+        </form>
+   </div>
+  </div>
+{% endfor %}
+
+
+
+  </div>
+  </div>
+
+
+
+
+{# {% empty %}#}
+{# <p>There are no any comments</p>#}
+{##}
+{#        {% endfor %}#}
+
+   {% block sidebar %} {% include 'forum/sidebar.html' %} {% endblock sidebar %}
+ </div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock content %}
